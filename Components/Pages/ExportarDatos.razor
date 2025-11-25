@@ -1,0 +1,172 @@
+﻿@page "/exportardatos"
+@rendermode InteractiveServer
+@using PruebaFinal.Services
+@using PruebaFinal.Models
+@using Microsoft.JSInterop
+@inject IProductoService ProductoService
+@inject IExportService ExportService
+@inject IJSRuntime JSRuntime
+
+<div class="container mt-5">
+    <h2>Exportar Productos</h2>
+    <!--funcionaaaaaaaaaaaaaaaaaaaal-->
+    @if (Productos == null)
+    {
+        <p>Cargando...</p>
+    }
+    else if (Productos.Count == 0)
+    {
+        <p class="text-warning">Sin productos</p>
+    }
+    else
+    {
+        <p><strong>Total: @Productos.Count productos</strong></p>
+
+        <button class="btn btn-success" @onclick="ClickExcel">📊 Descargar Excel</button>
+        <button class="btn btn-info" @onclick="ClickCsv">📄 Descargar CSV</button>
+        <button class="btn btn-danger" @onclick="ClickPdf">📑 Descargar PDF</button>
+
+        @if (!string.IsNullOrEmpty(Mensaje))
+        {
+            <div class="alert @(EsError ? "alert-danger" : "alert-success") mt-3">@Mensaje</div>
+        }
+
+        <table class="table table-sm mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Código</th>
+                    <th>Categoría</th>
+                    <th>Precio Venta</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Productos.Take(5))
+                {
+                    <tr>
+                        <td>@p.Id</td>
+                        <td>@p.Nombre</td>
+                        <td>@p.Codigo</td>
+                        <td>@p.Categoria</td>
+                        <td>$@p.PrecioVenta</td>
+                        <td>@p.Stock</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private List<Producto> Productos;
+    private string Mensaje = "";
+    private bool EsError = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Productos = await ProductoService.ObtenerTodosAsync();
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"Error: {ex.Message}";
+            EsError = true;
+            Productos = new();
+        }
+    }
+
+    private async Task ClickExcel()
+    {
+        Mensaje = "";
+        EsError = false;
+
+        try
+        {
+            var bytes = ExportService.ExportToExcel(Productos, "Productos");
+            if (bytes.Length > 0)
+            {
+                await Descargar(bytes, "productos.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                Mensaje = "✅ Excel descargado correctamente";
+            }
+            else
+            {
+                Mensaje = "❌ No se generó el archivo";
+                EsError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"❌ Error: {ex.Message}";
+            EsError = true;
+        }
+    }
+
+    private async Task ClickCsv()
+    {
+        Mensaje = "";
+        EsError = false;
+
+        try
+        {
+            var bytes = ExportService.ExportToCsv(Productos);
+            if (bytes.Length > 0)
+            {
+                await Descargar(bytes, "productos.csv", "text/csv");
+                Mensaje = "✅ CSV descargado correctamente";
+            }
+            else
+            {
+                Mensaje = "❌ No se generó el archivo";
+                EsError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"❌ Error: {ex.Message}";
+            EsError = true;
+        }
+    }
+
+    private async Task ClickPdf()
+    {
+        Mensaje = "";
+        EsError = false;
+
+        try
+        {
+            var bytes = ExportService.ExportToPdf(Productos, "Reporte de Productos");
+            if (bytes.Length > 0)
+            {
+                await Descargar(bytes, "productos.pdf", "application/pdf");
+                Mensaje = "✅ PDF descargado correctamente";
+            }
+            else
+            {
+                Mensaje = "❌ No se generó el archivo";
+                EsError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"❌ Error: {ex.Message}";
+            EsError = true;
+        }
+    }
+
+    private async Task Descargar(byte[] bytes, string nombre, string tipo)
+    {
+        try
+        {
+            var base64 = Convert.ToBase64String(bytes);
+            await JSRuntime.InvokeVoidAsync("downloadFile", nombre, tipo, base64);
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"❌ Error en descarga: {ex.Message}";
+            EsError = true;
+        }
+    }
+}

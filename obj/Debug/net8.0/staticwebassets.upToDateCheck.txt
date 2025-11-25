@@ -1,0 +1,14 @@
+wwwroot\app.css
+wwwroot\bootstrap\bootstrap.min.css
+wwwroot\bootstrap\bootstrap.min.css.map
+wwwroot\css\admin.css
+wwwroot\css\agregar.css
+wwwroot\css\ajustar.css
+wwwroot\css\descargar.css
+wwwroot\css\editar.css
+wwwroot\css\eliminar.css
+wwwroot\css\login.css
+wwwroot\css\site.css
+wwwroot\favicon.png
+wwwroot\js\admin.js
+wwwroot\js\app.js

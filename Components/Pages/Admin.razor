@@ -1,0 +1,147 @@
+﻿@page "/admin"
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Financiera</a>
+            <div class="user-section">
+                <div class="user-info">
+                    <span class="crown-icon">👑</span>
+                    <span>ADMINISTRADOR</span>
+                </div>
+                <a href="#" class="logout-btn">Salir</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Panel Header -->
+        <div class="panel-header">
+            <div class="panel-icon">👑</div>
+            <h1 class="panel-title">Panel de Administrador</h1>
+        </div>
+
+        <!-- Sections Grid -->
+        <div class="sections-grid" id="sectionsGrid">
+            <!-- Sección Productos -->
+            <div class="section-box">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">🛍️</span>
+                        <span>Gestión de Productos</span>
+                    </div>
+                </div>
+                <div class="section-actions">
+                    <a href="/agregar" class="action-btn">
+                        <span class="action-icon">➕</span>
+                        <span>Agregar productos</span>
+                    </a>
+                    <a href="/editar" class="action-btn">
+                        <span class="action-icon">✏️</span>
+                        <span>Editar productos</span>
+                    </a>
+
+                    <a href="/eliminar" class="action-btn">
+                        <span class="action-icon">🗑️</span>
+                        <span>Eliminar productos</span>
+                    </a>
+                    
+                    <NavLink href="/ajustar" class="action-btn">
+                        <span class="action-icon">✏️</span>
+                        <span>Ajustar cantidades manualmente</span>
+                    </NavLink>
+                </div>
+            </div>
+
+            <!-- Sección Movimientos -->
+            <div class="section-box">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">📊</span>
+                        <span>Movimientos de Inventario</span>
+                    </div>
+                </div>
+                <div class="section-actions">
+                    <a href="/entradas" class="action-btn">
+                        <span class="action-icon">📥</span>
+                        <span>Registrar entradas</span>
+                    </a>
+                    <a href="/salidas" class="action-btn">
+                        <span class="action-icon">📤</span>
+                        <span>Registrar salidas</span>
+                    </a>
+                    <a href="/historial" class="action-btn">
+                        <span class="action-icon">📋</span>
+                        <span>Ver historial</span>
+                    </a>
+                    <a href="/aprobar" class="action-btn">
+                        <span class="action-icon">✅</span>
+                        <span>Aprobar ajustes</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sección Reportes -->
+            <div class="section-box">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">📈</span>
+                        <span>Reportes y Exportación</span>
+                    </div>
+                </div>
+                <div class="section-actions">
+                    <button class="action-btn">
+                        <span class="action-icon">📊</span>
+                        <span>Stock actual</span>
+                    </button>
+                    <button class="action-btn">
+                        <span class="action-icon">📅</span>
+                        <span>Movimientos por período</span>
+                    </button>
+                    <button class="action-btn">
+                        <span class="action-icon">⚠️</span>
+                        <span>Productos con stock bajo</span>
+                    </button>
+                    <a href="/exportardatos" class="action-btn">
+                        <span class="action-icon">💾</span>
+                        <span>Exportar en CSV, Excel, PDF</span>
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Sección Usuarios -->
+            <div class="section-box">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">👥</span>
+                        <span>Gestión de Usuarios</span>
+                    </div>
+                </div>
+                <div class="section-actions">
+                    <button class="action-btn">
+                        <span class="action-icon">👤</span>
+                        <span>Crear usuarios operadores</span>
+                    </button>
+                    <button class="action-btn">
+                        <span class="action-icon">🗑️</span>
+                        <span>Eliminar usuarios operadores</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,207 @@
+﻿@page "/agregar"
+@rendermode InteractiveServer
+@using PruebaFinal.Models
+@using PruebaFinal.Services
+@inject IProductoService ProductoService
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.Forms
+
+<link rel="stylesheet" href="/css/agregar.css">
+
+<PageTitle>Agregar Producto - Sistema Financiero</PageTitle>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-content">
+        <a href="/admin" class="logo">Financiera</a>
+        <a href="/admin" class="back-btn">
+            <span>←</span>
+            <span>Volver al Panel</span>
+        </a>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-icon">📦</div>
+        <h1 class="page-title">Agregar Nuevo Producto</h1>
+    </div>
+
+    <!-- Mensajes de error/éxito -->
+    @if (!string.IsNullOrEmpty(mensajeError))
+    {
+        <div class="alert alert-error">
+            ❌ @mensajeError
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(mensajeExito))
+    {
+        <div class="alert alert-success">
+            ✅ @mensajeExito
+        </div>
+    }
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <EditForm Model="@producto" OnValidSubmit="@GuardarProducto" FormName="formAgregarProducto">
+            <DataAnnotationsValidator />
+
+            <div class="form-grid">
+                <!-- Información Básica -->
+                <div class="form-group">
+                    <label class="form-label" for="productName">
+                        📝 Nombre del Producto
+                        <span class="required">*</span>
+                    </label>
+                    <InputText id="productName" @bind-Value="producto.Nombre" class="form-input" placeholder="Ej: iPhone 15 Pro Max" />
+                    <ValidationMessage For="@(() => producto.Nombre)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="productCode">
+                        🏷️ Código/SKU
+                        <span class="required">*</span>
+                    </label>
+                    <InputText id="productCode" @bind-Value="producto.Codigo" class="form-input" placeholder="Ej: IP15PM-256-BLK" />
+                    <ValidationMessage For="@(() => producto.Codigo)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="category">
+                        📂 Categoría
+                        <span class="required">*</span>
+                    </label>
+                    <InputSelect id="category" @bind-Value="producto.Categoria" class="form-select">
+                        <option value="">Seleccionar categoría...</option>
+                        <option value="Electrónicos">Electrónicos</option>
+                        <option value="Ropa y Accesorios">Ropa y Accesorios</option>
+                        <option value="Hogar y Jardín">Hogar y Jardín</option>
+                        <option value="Deportes">Deportes</option>
+                        <option value="Libros">Libros</option>
+                        <option value="Otros">Otros</option>
+                    </InputSelect>
+                    <ValidationMessage For="@(() => producto.Categoria)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="brand">
+                        🏢 Marca
+                    </label>
+                    <InputText id="brand" @bind-Value="producto.Marca" class="form-input" placeholder="Ej: Apple, Samsung, Nike..." />
+                </div>
+
+                <!-- Precios e Inventario -->
+                <div class="form-group">
+                    <label class="form-label" for="costPrice">
+                        💰 Precio de Costo
+                        <span class="required">*</span>
+                    </label>
+                    <InputNumber id="costPrice" @bind-Value="producto.PrecioCosto" class="form-input" placeholder="0.00" step="0.01" />
+                    <ValidationMessage For="@(() => producto.PrecioCosto)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="salePrice">
+                        💵 Precio de Venta
+                        <span class="required">*</span>
+                    </label>
+                    <InputNumber id="salePrice" @bind-Value="producto.PrecioVenta" class="form-input" placeholder="0.00" step="0.01" />
+                    <ValidationMessage For="@(() => producto.PrecioVenta)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="stock">
+                        📊 Cantidad en Stock
+                        <span class="required">*</span>
+                    </label>
+                    <InputNumber id="stock" @bind-Value="producto.Stock" class="form-input" placeholder="0" />
+                    <ValidationMessage For="@(() => producto.Stock)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="minStock">
+                        ⚠️ Stock Mínimo
+                    </label>
+                    <InputNumber id="minStock" @bind-Value="producto.StockMinimo" class="form-input" placeholder="5" />
+                </div>
+
+                <!-- Descripción -->
+                <div class="form-group full-width">
+                    <label class="form-label" for="description">
+                        📄 Descripción del Producto
+                    </label>
+                    <InputTextArea id="description" @bind-Value="producto.Descripcion" class="form-textarea" placeholder="Describe las características, especificaciones y detalles del producto..." />
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" disabled="@guardando">
+                    @if (guardando)
+                    {
+                        <span>⏳ Guardando...</span>
+                    }
+                    else
+                    {
+                        <span>✅ Agregar Producto</span>
+                    }
+                </button>
+            </div>
+        </EditForm>
+    </div>
+</main>
+
+@code {
+    [SupplyParameterFromForm]
+    private Producto producto { get; set; } = new();
+
+    private string mensajeError = string.Empty;
+    private string mensajeExito = string.Empty;
+    private bool guardando = false;
+
+    private async Task GuardarProducto()
+    {
+        try
+        {
+            guardando = true;
+            mensajeError = string.Empty;
+            mensajeExito = string.Empty;
+
+            // Verificar si el código ya existe
+            var codigoExiste = await ProductoService.CodigoExisteAsync(producto.Codigo);
+            if (codigoExiste)
+            {
+                mensajeError = "El código/SKU ya existe. Por favor usa uno diferente.";
+                guardando = false;
+                return;
+            }
+
+            // Guardar el producto
+            var resultado = await ProductoService.CrearAsync(producto);
+
+            if (resultado)
+            {
+                mensajeExito = "¡Producto agregado exitosamente!";
+
+                // Esperar 2 segundos para mostrar el mensaje y luego redirigir
+                await Task.Delay(2000);
+                //Navigation.NavigateTo("/");
+            }
+            else
+            {
+                mensajeError = "Ocurrió un error al guardar el producto. Inténtalo de nuevo.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            guardando = false;
+        }
+    }
+}

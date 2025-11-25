@@ -1,0 +1,108 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using PruebaFinal.Services
+@using PruebaFinal.Models
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<link rel="stylesheet" href="/css/login.css">
+
+<PageTitle>Inicio de Sesión - Sistema Financiero</PageTitle>
+
+<div class="login-overlay">
+    <div class="login-box">
+        <h2>Inicio</h2>
+        <p>Inicie sesión para continuar con su cuenta</p>
+
+        @if (!string.IsNullOrEmpty(mensajeError))
+        {
+            <div class="alert alert-error">
+                ❌ @mensajeError
+            </div>
+        }
+
+        <input type="text"
+               placeholder="Usuario"
+               class="login-input"
+               @bind="nombreUsuario"
+               @onkeydown="@((e) => { if (e.Key == "Enter") IniciarSesion(); })" />
+
+        <div class="password-field">
+            <input type="@(mostrarPassword ? "text" : "password")"
+                   placeholder="Contraseña"
+                   class="login-input"
+                   @bind="password"
+                   @onkeydown="@((e) => { if (e.Key == "Enter") IniciarSesion(); })" />
+            <span class="toggle-pass" @onclick="TogglePassword">@(mostrarPassword ? "🙈" : "👁")</span>
+        </div>
+
+        <label class="login-remember">
+            <input type="checkbox" @bind="mantenerSesion" /> Mantener la sesión conectada
+        </label>
+
+        <button class="login-btn" @onclick="IniciarSesion" disabled="@iniciando">
+            @if (iniciando)
+            {
+                <span>⏳ Iniciando...</span>
+            }
+            else
+            {
+                <span>Iniciar</span>
+            }
+        </button>
+
+        <div class="login-footer">
+           <!-- <span>Us<strong>admin</strong> / Contraseña: <strong>admin123</strong></span>-->
+        </div>
+    </div>
+</div>
+
+@code {
+    private string nombreUsuario = string.Empty;
+    private string password = string.Empty;
+    private bool mantenerSesion = false;
+    private bool mostrarPassword = false;
+    private bool iniciando = false;
+    private string mensajeError = string.Empty;
+
+    private void TogglePassword()
+    {
+        mostrarPassword = !mostrarPassword;
+    }
+
+    private async Task IniciarSesion()
+    {
+        try
+        {
+            iniciando = true;
+            mensajeError = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(nombreUsuario) || string.IsNullOrWhiteSpace(password))
+            {
+                mensajeError = "Por favor ingresa usuario y contraseña";
+                return;
+            }
+
+            var usuario = await AuthService.ValidarUsuarioAsync(nombreUsuario, password);
+
+            if (usuario != null)
+            {
+                // Aquí podrías guardar info en sesión o cookies
+               // Navigation.NavigateTo("/");
+                Navigation.NavigateTo("/admin", forceLoad: true);
+            }
+            else
+            {
+                mensajeError = "Usuario o contraseña incorrectos";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            iniciando = false;
+        }
+    }
+}

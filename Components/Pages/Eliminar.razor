@@ -1,0 +1,273 @@
+﻿@page "/eliminar"
+@page "/eliminar/{IdProducto:int}"
+@rendermode InteractiveServer
+@using PruebaFinal.Models
+@using PruebaFinal.Services
+@inject IProductoService ProductoService
+@inject NavigationManager Navigation
+
+<link rel="stylesheet" href="/css/eliminar.css">
+
+<PageTitle>Eliminar Producto - Sistema Financiero</PageTitle>
+
+<header class="header">
+    <h1>Financiera</h1>
+    <button class="back-btn" @onclick="@(() => Navigation.NavigateTo("/admin"))">← Volver al Panel</button>
+</header>
+
+<div class="container">
+    <div class="page-header">
+        <div class="page-title">
+            <div class="icon">🗑️</div>
+            <h2>Eliminar Producto</h2>
+        </div>
+    </div>
+
+    @if (productos == null)
+    {
+        <div class="loading">⏳ Cargando productos...</div>
+    }
+    else if (!productos.Any())
+    {
+        <div class="alert alert-warning">
+            ⚠️ No hay productos registrados. <a href="/agregar">Agregar uno ahora</a>
+        </div>
+    }
+    else
+    {
+        @if (productoSeleccionado == null)
+        {
+            <!-- Sección de búsqueda aaaaaaaaaaaaaaaaaaaaaaaa -->
+            <div class="search-section">
+                <label class="search-label">🔍 Buscar Producto</label>
+                <div class="search-row">
+                    <input type="text" class="search-input" placeholder="Buscar por nombre, código/SKU o marca..." @bind="terminoBusqueda" @bind:event="oninput" />
+                    <button class="search-btn" @onclick="Buscar">🔍 Buscar</button>
+                </div>
+            </div>
+
+            <!-- Lista de productos -->
+            <div class="product-list">
+                <h3>Selecciona un producto para eliminar:</h3>
+                <div class="products-grid">
+                    @foreach (var prod in productosFiltrados)
+                    {
+                        <div class="product-card" @onclick="@(() => SeleccionarProducto(prod.Id))">
+                            <div class="product-info">
+                                <h4>@prod.Nombre</h4>
+                                <p class="product-code">Código: @prod.Codigo</p>
+                                <p class="product-category">📁 @prod.Categoria</p>
+                                <p class="product-stock">📦 Stock: @prod.Stock unidades</p>
+                            </div>
+                            <div class="product-action">
+                                <button type="button" class="btn-delete">🗑️ Eliminar</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Confirmación de eliminación -->
+            @if (!string.IsNullOrEmpty(mensajeError))
+            {
+                <div class="alert alert-error">
+                    ❌ @mensajeError
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(mensajeExito))
+            {
+                <div class="alert alert-success">
+                    ✅ @mensajeExito
+                </div>
+            }
+
+            <div class="warning-container">
+                <div class="warning-header">
+                    <div class="warning-title">
+                        <div class="icon">⚠️</div>
+                        <h3>¡Atención! Esta acción no se puede deshacer</h3>
+                    </div>
+                    <p class="warning-text">
+                        Estás a punto de eliminar permanentemente este producto del sistema.
+                        Revisa cuidadosamente la información antes de continuar.
+                    </p>
+                </div>
+
+                <div class="product-info">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon">📦</div>
+                            <div>
+                                <h3 class="product-name">@productoSeleccionado.Nombre</h3>
+                                <p class="product-sku">SKU: @productoSeleccionado.Codigo</p>
+                            </div>
+                        </div>
+
+                        <div class="product-details">
+                            <div class="detail-item">
+                                <span class="detail-label">📁 Categoría:</span>
+                                <span class="detail-value">@productoSeleccionado.Categoria</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">🏢 Marca:</span>
+                                <span class="detail-value">@(productoSeleccionado.Marca ?? "N/A")</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">💰 Precio Costo:</span>
+                                <span class="detail-value">$@productoSeleccionado.PrecioCosto.ToString("N2")</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">💵 Precio Venta:</span>
+                                <span class="detail-value">$@productoSeleccionado.PrecioVenta.ToString("N2")</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">📦 Stock Actual:</span>
+                                <span class="detail-value">@productoSeleccionado.Stock unidades</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">⚠️ Stock Mínimo:</span>
+                                <span class="detail-value">@productoSeleccionado.StockMinimo unidades</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="consequences">
+                        <div class="consequences-title">
+                            <div class="icon">⚡</div>
+                            <h4>Consecuencias de eliminar este producto:</h4>
+                        </div>
+                        <ul class="consequences-list">
+                            <li>Se eliminará permanentemente del inventario</li>
+                            <li>No podrá ser vendido en futuras transacciones</li>
+                            <li>El historial de ventas se mantendrá</li>
+                            <li>Referencias en reportes quedarán marcadas como "Producto eliminado"</li>
+                            <li>Esta acción no se puede revertir</li>
+                        </ul>
+                    </div>
+
+                    <div class="confirmation-section">
+                        <p class="confirmation-title">Para continuar, debes confirmar que entiendes las consecuencias:</p>
+                        <div class="confirmation-checkbox">
+                            <input type="checkbox" id="confirmDelete" @bind="confirmacionMarcada" />
+                            <label for="confirmDelete" class="confirmation-text">
+                                Entiendo que esta acción eliminará permanentemente el producto <strong>"@productoSeleccionado.Nombre"</strong>
+                                del sistema y que no podrá ser recuperado.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" @onclick="CancelarEliminacion">❌ Cancelar</button>
+                    <button class="btn btn-danger" @onclick="EliminarProducto" disabled="@(!confirmacionMarcada || eliminando)">
+                        @if (eliminando)
+                        {
+                            <span>⏳ Eliminando...</span>
+                        }
+                        else
+                        {
+                            <span>🗑️ Eliminar Permanentemente</span>
+                        }
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int? IdProducto { get; set; }
+
+    private List<Producto>? productos;
+    private List<Producto> productosFiltrados = new();
+    private Producto? productoSeleccionado;
+    private string terminoBusqueda = string.Empty;
+    private bool confirmacionMarcada = false;
+    private bool eliminando = false;
+    private string mensajeError = string.Empty;
+    private string mensajeExito = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        productos = await ProductoService.ObtenerTodosAsync();
+        productosFiltrados = productos;
+
+        if (IdProducto.HasValue)
+        {
+            await SeleccionarProducto(IdProducto.Value);
+        }
+    }
+
+    private void Buscar()
+    {
+        if (productos == null) return;
+
+        if (string.IsNullOrWhiteSpace(terminoBusqueda))
+        {
+            productosFiltrados = productos;
+        }
+        else
+        {
+            var termino = terminoBusqueda.ToLower();
+            productosFiltrados = productos.Where(p =>
+                p.Nombre.ToLower().Contains(termino) ||
+                p.Codigo.ToLower().Contains(termino) ||
+                (p.Marca != null && p.Marca.ToLower().Contains(termino))
+            ).ToList();
+        }
+    }
+
+    private async Task SeleccionarProducto(int id)
+    {
+        productoSeleccionado = await ProductoService.ObtenerPorIdAsync(id);
+        if (productoSeleccionado == null)
+        {
+            mensajeError = "Producto no encontrado.";
+        }
+    }
+
+    private void CancelarEliminacion()
+    {
+        productoSeleccionado = null;
+        confirmacionMarcada = false;
+        mensajeError = string.Empty;
+        mensajeExito = string.Empty;
+    }
+
+    private async Task EliminarProducto()
+    {
+        if (productoSeleccionado == null || !confirmacionMarcada) return;
+
+        try
+        {
+            eliminando = true;
+            mensajeError = string.Empty;
+            mensajeExito = string.Empty;
+
+            var resultado = await ProductoService.EliminarAsync(productoSeleccionado.Id);
+
+            if (resultado)
+            {
+                mensajeExito = "¡Producto eliminado exitosamente!";
+                await Task.Delay(2000);
+                //Navigation.NavigateTo("/");
+            }
+            else
+            {
+                mensajeError = "Ocurrió un error al eliminar el producto.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            eliminando = false;
+        }
+    }
+}

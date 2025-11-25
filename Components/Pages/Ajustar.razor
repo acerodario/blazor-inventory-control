@@ -1,0 +1,370 @@
+﻿@page "/ajustar"
+@rendermode InteractiveServer
+@using PruebaFinal.Models
+@using PruebaFinal.Services
+@inject IProductoService ProductoService
+@inject NavigationManager Navigation
+
+<PageTitle>Financiera - Ajustar Cantidades</PageTitle>
+
+<link rel="stylesheet" href="css/ajustar.css" />
+
+<header class="header">
+    <h1>Financiera</h1>
+    <button class="back-btn" @onclick="Volver">← Volver al Panel</button>
+</header>
+
+<div class="container">
+    <div class="page-header">
+        <div class="page-title">
+            <div class="icon">⚖️</div>
+            <h2>Ajustar Cantidades Manualmente</h2>
+        </div>
+    </div>
+
+    <!-- Mensajes de error/éxito -->
+    @if (!string.IsNullOrEmpty(mensajeError))
+    {
+        <div class="alert alert-error">
+            ❌ @mensajeError
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(mensajeExito))
+    {
+        <div class="alert alert-success">
+            ✅ @mensajeExito
+        </div>
+    }
+
+    <!-- Búsqueda de producto -->
+    <div class="search-section">
+        <div class="search-row">
+            <div class="search-group">
+                <label class="search-label">🔍 Buscar Producto</label>
+                <input type="text"
+                       class="search-input"
+                       placeholder="Buscar por nombre, código/SKU o marca..."
+                       @bind="textoBusqueda"
+                       @bind:event="oninput"
+                       @onkeydown="@(async (e) => { if (e.Key == "Enter") await BuscarProducto(); })" />
+            </div>
+            <button class="search-btn" @onclick="BuscarProducto">🔍 Buscar</button>
+        </div>
+
+        <!-- Resultados de búsqueda -->
+        @if (mostrarResultados && resultadosBusqueda != null && resultadosBusqueda.Any())
+        {
+            <div class="search-results">
+                @foreach (var prod in resultadosBusqueda)
+                {
+                    <div class="search-result-item" @onclick="() => SeleccionarProducto(prod)">
+                        <div class="product-icon">📦</div>
+                        <div class="product-info">
+                            <strong>@prod.Nombre</strong>
+                            <small>SKU: @prod.Codigo • @prod.Categoria • Stock: @prod.Stock</small>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(textoBusqueda) && mostrarResultados && (resultadosBusqueda == null || !resultadosBusqueda.Any()))
+        {
+            <div class="no-results">
+                ⚠️ No se encontraron productos con ese criterio.
+            </div>
+        }
+    </div>
+
+    <!-- Contenedor del producto seleccionado -->
+    @if (productoSeleccionado != null)
+    {
+        <div class="product-container">
+            <div class="product-header">
+                <div class="found-product">
+                    <div class="product-icon">📱</div>
+                    <div class="product-info">
+                        <h3>@productoSeleccionado.Nombre</h3>
+                        <p>SKU: @productoSeleccionado.Codigo • Categoría: @productoSeleccionado.Categoria • Marca: @(productoSeleccionado.Marca ?? "Sin marca")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="adjustment-content">
+                <div class="current-stock">
+                    <div class="stock-label">STOCK ACTUAL</div>
+                    <div class="stock-value">@stockActual <span class="stock-unit">unidades</span></div>
+                </div>
+
+                <div class="adjustment-form">
+                    <div class="adjustment-row">
+                        <div class="adjustment-group">
+                            <label class="adjustment-label">
+                                📦 Nueva Cantidad <span class="required">*</span>
+                            </label>
+                            <div class="quantity-input-group">
+                                <button class="quantity-btn" type="button" @onclick="Decrementar">-</button>
+                                <input type="number"
+                                       class="quantity-input"
+                                       @bind="nuevaCantidad"
+                                       @bind:event="oninput"
+                                       min="0" />
+                                <button class="quantity-btn" type="button" @onclick="Incrementar">+</button>
+                            </div>
+                        </div>
+
+                        <div class="adjustment-group">
+                            <label class="adjustment-label">
+                                📋 Tipo de Ajuste <span class="required">*</span>
+                            </label>
+                            <select class="adjustment-select" @bind="tipoAjuste">
+                                <option value="">Seleccionar tipo...</option>
+                                <option value="inventory">Ajuste de Inventario</option>
+                                <option value="damaged">Productos Dañados</option>
+                                <option value="lost">Productos Perdidos</option>
+                                <option value="found">Productos Encontrados</option>
+                                <option value="return">Devolución de Cliente</option>
+                                <option value="correction">Corrección de Error</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="adjustment-group">
+                        <label class="adjustment-label">
+                            📝 Motivo del Ajuste <span class="required">*</span>
+                        </label>
+                        <textarea class="adjustment-textarea"
+                                  @bind="motivoAjuste"
+                                  placeholder="Describe detalladamente el motivo del ajuste de cantidad..."></textarea>
+                    </div>
+
+                    <div class="preview-section">
+                        <div class="preview-title">
+                            <div class="icon">👁️</div>
+                            <span>Vista Previa del Ajuste</span>
+                        </div>
+                        <div class="preview-grid">
+                            <div class="preview-item">
+                                <span class="preview-label">Stock Anterior:</span>
+                                <span class="preview-value">@stockActual unidades</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Stock Nuevo:</span>
+                                <span class="preview-value">@nuevaCantidad unidades</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Diferencia:</span>
+                                <span class="preview-value @ObtenerClaseDiferencia()">@ObtenerTextoDiferencia()</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Tipo de Movimiento:</span>
+                                <span class="preview-value">@ObtenerTipoMovimiento()</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" @onclick="Cancelar">❌ Cancelar</button>
+                <button class="btn btn-primary" @onclick="AplicarAjuste" disabled="@guardando">
+                    @if (guardando)
+                    {
+                        <span>⏳ Aplicando...</span>
+                    }
+                    else
+                    {
+                        <span>💾 Aplicar Ajuste</span>
+                    }
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    // Variables para búsqueda
+    private string textoBusqueda = string.Empty;
+    private List<Producto>? resultadosBusqueda;
+    private bool mostrarResultados = false;
+
+    // Producto seleccionado y datos del ajuste
+    private Producto? productoSeleccionado;
+    private int stockActual = 0;
+    private int nuevaCantidad = 0;
+    private string tipoAjuste = string.Empty;
+    private string motivoAjuste = string.Empty;
+
+    // Control de estado
+    private bool guardando = false;
+    private string mensajeError = string.Empty;
+    private string mensajeExito = string.Empty;
+
+    private async Task BuscarProducto()
+    {
+        if (string.IsNullOrWhiteSpace(textoBusqueda))
+        {
+            mensajeError = "Por favor ingresa un término de búsqueda.";
+            mostrarResultados = false;
+            return;
+        }
+
+        try
+        {
+            mensajeError = string.Empty;
+            mensajeExito = string.Empty;
+            resultadosBusqueda = await ProductoService.BuscarProductosAsync(textoBusqueda);
+            mostrarResultados = true;
+
+            // Si solo hay un resultado, seleccionarlo automáticamente
+            if (resultadosBusqueda != null && resultadosBusqueda.Count == 1)
+            {
+                SeleccionarProducto(resultadosBusqueda[0]);
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error al buscar: {ex.Message}";
+            mostrarResultados = false;
+        }
+    }
+
+    private void SeleccionarProducto(Producto producto)
+    {
+        productoSeleccionado = producto;
+        stockActual = producto.Stock;
+        nuevaCantidad = producto.Stock;
+        tipoAjuste = string.Empty;
+        motivoAjuste = string.Empty;
+        mostrarResultados = false;
+        mensajeError = string.Empty;
+        mensajeExito = string.Empty;
+    }
+
+    private void Incrementar()
+    {
+        nuevaCantidad++;
+    }
+
+    private void Decrementar()
+    {
+        if (nuevaCantidad > 0)
+        {
+            nuevaCantidad--;
+        }
+    }
+
+    private string ObtenerTipoMovimiento()
+    {
+        int diferencia = nuevaCantidad - stockActual;
+
+        if (diferencia > 0)
+            return "Entrada de stock";
+        else if (diferencia < 0)
+            return "Salida de stock";
+        else
+            return "Sin cambios";
+    }
+
+    private string ObtenerTextoDiferencia()
+    {
+        int diferencia = nuevaCantidad - stockActual;
+
+        if (diferencia > 0)
+            return $"+{diferencia} unidades";
+        else if (diferencia < 0)
+            return $"{diferencia} unidades";
+        else
+            return "0 unidades";
+    }
+
+    private string ObtenerClaseDiferencia()
+    {
+        int diferencia = nuevaCantidad - stockActual;
+
+        if (diferencia > 0)
+            return "preview-value positive";
+        else if (diferencia < 0)
+            return "preview-value negative";
+        else
+            return "preview-value";
+    }
+
+    private async Task AplicarAjuste()
+    {
+        // Validaciones
+        if (productoSeleccionado == null)
+        {
+            mensajeError = "No hay ningún producto seleccionado.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(tipoAjuste))
+        {
+            mensajeError = "Por favor selecciona el tipo de ajuste.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(motivoAjuste))
+        {
+            mensajeError = "Por favor describe el motivo del ajuste.";
+            return;
+        }
+
+        if (nuevaCantidad < 0)
+        {
+            mensajeError = "La cantidad no puede ser negativa.";
+            return;
+        }
+
+        try
+        {
+            guardando = true;
+            mensajeError = string.Empty;
+            mensajeExito = string.Empty;
+
+            // Llamar al servicio para ajustar el stock
+            var resultado = await ProductoService.AjustarStockAsync(productoSeleccionado.Id, nuevaCantidad);
+
+            if (resultado)
+            {
+                mensajeExito = $"¡Ajuste aplicado exitosamente! Stock actualizado de {stockActual} a {nuevaCantidad} unidades.";
+
+                // Esperar 2 segundos y redirigir
+                await Task.Delay(2000);
+                //Navigation.NavigateTo("/");
+            }
+            else
+            {
+                mensajeError = "Error al aplicar el ajuste. Inténtalo de nuevo.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            guardando = false;
+        }
+    }
+
+    private void Cancelar()
+    {
+        productoSeleccionado = null;
+        stockActual = 0;
+        nuevaCantidad = 0;
+        tipoAjuste = string.Empty;
+        motivoAjuste = string.Empty;
+        textoBusqueda = string.Empty;
+        resultadosBusqueda = null;
+        mostrarResultados = false;
+        mensajeError = string.Empty;
+        mensajeExito = string.Empty;
+    }
+
+    private void Volver()
+    {
+        Navigation.NavigateTo("/admin");
+    }
+}

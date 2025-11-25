@@ -1,0 +1,188 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\pruebafinal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:pruebafinal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\components\\pages\\exportardatos.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:components\\pages\\exportardatos.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\services\\iexportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:services\\iexportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\services\\exportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:services\\exportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\wwwroot\\js\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:wwwroot\\js\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\models\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:models\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\components\\pages\\admin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:components\\pages\\admin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|c:\\users\\user\\onedrive\\escritorio\\lunes\\pruebafinal\\components\\pages\\ajustar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AE3D4535-6AB8-40DD-8C63-ABAD07267BB1}|PruebaFinal.csproj|solutionrelative:components\\pages\\ajustar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Admin.razor",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\Pages\\Admin.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Admin.razor",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\Pages\\Admin.razor",
+              "RelativeToolTip": "Components\\Pages\\Admin.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHQAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-28T17:30:35.501Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Ajustar.razor",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\Pages\\Ajustar.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Ajustar.razor",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\Pages\\Ajustar.razor",
+              "RelativeToolTip": "Components\\Pages\\Ajustar.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-28T22:51:08.771Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "App.razor",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\App.razor",
+              "RelativeDocumentMoniker": "Components\\App.razor",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\App.razor",
+              "RelativeToolTip": "Components\\App.razor",
+              "ViewState": "AgIAABwAAAAAAAAAAAAAAD4AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-31T21:38:19.329Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAADEAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:46:15.093Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ExportarDatos.razor",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\Pages\\ExportarDatos.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\ExportarDatos.razor",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Components\\Pages\\ExportarDatos.razor",
+              "RelativeToolTip": "Components\\Pages\\ExportarDatos.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-22T16:55:16.402Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ExportService.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Services\\ExportService.cs",
+              "RelativeDocumentMoniker": "Services\\ExportService.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Services\\ExportService.cs",
+              "RelativeToolTip": "Services\\ExportService.cs",
+              "ViewState": "AgIAALQAAAAAAAAAAAAAAKAAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T16:45:29.564Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IExportService.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Services\\IExportService.cs",
+              "RelativeDocumentMoniker": "Services\\IExportService.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Services\\IExportService.cs",
+              "RelativeToolTip": "Services\\IExportService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T17:15:22.736Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "app.js",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\wwwroot\\js\\app.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\app.js",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\wwwroot\\js\\app.js",
+              "RelativeToolTip": "wwwroot\\js\\app.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-22T16:57:40.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Producto.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Models\\Producto.cs",
+              "RelativeDocumentMoniker": "Models\\Producto.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\Models\\Producto.cs",
+              "RelativeToolTip": "Models\\Producto.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAwwCYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:38:32.128Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PruebaFinal.csproj",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\PruebaFinal.csproj",
+              "RelativeDocumentMoniker": "PruebaFinal.csproj",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Escritorio\\lunes\\PruebaFinal\\PruebaFinal.csproj",
+              "RelativeToolTip": "PruebaFinal.csproj",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-28T17:44:30.328Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

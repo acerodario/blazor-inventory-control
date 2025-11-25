@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="PruebaFinal.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+</head>
+<body>
+    <Routes />
+    <script src="_framework/blazor.web.js"></script>
+
+    <!-- ✅ SCRIPT INLINE - SOLUCIÓN DEFINITIVA -->
+    <script>
+        console.log('🟢 downloadFile cargado correctamente');
+
+        window.downloadFile = function (fileName, contentType, base64Data) {
+            console.log('📥 Iniciando descarga:', fileName);
+            console.log('📦 Tipo de archivo:', contentType);
+            console.log('💾 Tamaño de datos (base64):', base64Data.length, 'caracteres');
+
+            try {
+                // Convertir base64 a bytes
+                const byteCharacters = atob(base64Data);
+                const byteNumbers = new Array(byteCharacters.length);
+
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: contentType });
+
+                console.log('✅ Blob creado:', blob.size, 'bytes');
+
+                // Crear enlace temporal y descargar
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Limpiar URL temporal
+                window.URL.revokeObjectURL(link.href);
+
+                console.log('✅ ¡Descarga completada exitosamente!');
+            } catch (error) {
+                console.error('❌ Error en descarga:', error);
+                alert('Error al descargar el archivo: ' + error.message);
+            }
+        };
+
+        // Verificación
+        console.log('✅ Función disponible:', typeof window.downloadFile === 'function');
+    </script>
+</body>
+</html>
